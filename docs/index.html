@@ -1,210 +1,895 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JM Analytics | Analista de Dados</title>
-  <meta name="description" content="Transformo dados em decisões. Dashboards, automação e insights claros para sua empresa.">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
-  <style>
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background: #f8fafc; }
-    .active-nav { color: #0369a1; font-weight: 700; }
-    .keyword-tag { transition: transform .2s, box-shadow .2s; }
-    .keyword-tag:hover { transform: scale(1.07); box-shadow: 0 4px 12px rgba(3, 105, 161, 0.16); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site João Marcos</title>
+    <!-- Link para a fonte Poppins do Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Link para ícones Lucide (substituindo Feather Icons para maior compatibilidade e modernidade) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* ==================================== */
+        /* Variáveis CSS para a Paleta de Cores */
+        /* ==================================== */
+        :root {
+            --color-primary: #4CAF50; /* Verde Esperança Profissional */
+            --color-secondary: #81C784;
+            --color-tertiary: #A5D6A7;
+            --color-light-gray: #F5F5F5; /* Fundo claro */
+            --color-dark-gray: #424242; /* Texto escuro */
+            --color-white: #FFFFFF;
+            --color-black: #000000;
+        }
+
+        /* ============================ */
+        /* Estilos Globais e Reset CSS */
+        /* ============================ */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif; /* Fonte principal para todo o corpo */
+            color: var(--color-dark-gray); /* Cor de texto padrão */
+            background-color: var(--color-light-gray); /* Cor de fundo padrão */
+            line-height: 1.6; /* Altura da linha para melhor legibilidade */
+            scroll-behavior: smooth; /* Rolagem suave para navegação de âncoras */
+        }
+
+        /* Remove sublinhado de links e herda a cor do pai */
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ========================== */
+        /* Estilos do Cabeçalho (Header) */
+        /* ========================== */
+        .header {
+            background-color: var(--color-white);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); /* Sombra suave para profundidade */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom-left-radius: 10px; /* Bordas arredondadas na parte inferior */
+            border-bottom-right-radius: 10px;
+            position: sticky; /* Fixa o cabeçalho no topo ao rolar */
+            top: 0;
+            z-index: 1000; /* Garante que o cabeçalho fique acima de outros elementos */
+        }
+
+        .header-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--color-primary); /* Cor primária para o logo */
+            padding: 0.5rem 0;
+            border-radius: 8px;
+            transition: all 0.3s ease; /* Transição suave para efeitos de hover */
+        }
+
+        .header-logo:hover {
+            transform: scale(1.02); /* Leve aumento no tamanho no hover */
+            color: var(--color-secondary); /* Mudança de cor no hover */
+        }
+
+        /* ========================= */
+        /* Estilos da Navegação (Nav) */
+        /* ========================= */
+        .nav-menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 2.5rem; /* Espaçamento entre os itens do menu */
+        }
+
+        .nav-menu li a {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-dark-gray);
+            padding: 0.8rem 0;
+            position: relative;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+
+        /* Linha de destaque no hover e para o item ativo */
+        .nav-menu li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            background-color: var(--color-primary);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .nav-menu li a:hover::after,
+        .nav-menu li a.active::after {
+            width: 100%; /* Expande a linha no hover ou quando ativo */
+        }
+
+        .nav-menu li a:hover {
+            color: var(--color-primary);
+            transform: translateY(-2px); /* Leve movimento para cima no hover */
+        }
+
+        /* ============================ */
+        /* Estilos do Botão Hamburger (Mobile) */
+        /* ============================ */
+        .hamburger-menu {
+            display: none; /* Escondido por padrão em desktop */
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 1001; /* Acima do menu para garantir clique */
+        }
+
+        .hamburger-menu span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: var(--color-dark-gray);
+            border-radius: 2px;
+            transition: all 0.3s ease; /* Transição para a animação de X */
+        }
+
+        /* Animação do Hamburger para X */
+        .hamburger-menu.active span:nth-child(1) {
+            transform: translateY(8.5px) rotate(45deg);
+        }
+
+        .hamburger-menu.active span:nth-child(2) {
+            opacity: 0; /* Esconde a barra do meio */
+        }
+
+        .hamburger-menu.active span:nth-child(3) {
+            transform: translateY(-8.5px) rotate(-45deg);
+        }
+
+        /* ================================== */
+        /* Responsividade do Cabeçalho e Navegação */
+        /* ================================== */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem 1.5rem;
+            }
+
+            .hamburger-menu {
+                display: flex; /* Torna o hambúrguer visível em mobile */
+            }
+
+            .nav-menu {
+                display: none; /* Esconde o menu de navegação padrão em mobile */
+                flex-direction: column;
+                position: absolute;
+                top: 70px; /* Posiciona o menu abaixo do cabeçalho */
+                left: 0;
+                width: 100%;
+                background-color: var(--color-white);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                padding: 1.5rem 0;
+                border-bottom-left-radius: 10px;
+                border-bottom-right-radius: 10px;
+                opacity: 0; /* Começa invisível para a transição */
+                transform: translateY(-20px); /* Começa um pouco acima para a transição */
+                transition: opacity 0.3s ease, transform 0.3s ease;
+            }
+
+            .nav-menu.active {
+                display: flex; /* Torna o menu visível quando ativo */
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .nav-menu li {
+                text-align: center;
+                margin-bottom: 1rem;
+            }
+
+            .nav-menu li:last-child {
+                margin-bottom: 0;
+            }
+
+            .nav-menu li a {
+                font-size: 1.2rem;
+                padding: 0.8rem 1.5rem;
+                display: block;
+                width: fit-content;
+                margin: 0 auto;
+            }
+
+            .nav-menu li a::after {
+                height: 2px;
+            }
+        }
+
+        /* ================================== */
+        /* Estilos da Seção Fale Comigo */
+        /* ================================== */
+        .fale-comigo-section {
+            padding: 5rem 2rem;
+            text-align: center;
+            background-color: var(--color-light-gray);
+        }
+
+        .fale-comigo-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-dark-gray);
+            margin-bottom: 3rem;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Layout 2x2 responsivo */
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .social-card {
+            background-color: var(--color-white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: all 0.3s ease; /* Transição para efeitos de hover */
+            position: relative; /* Necessário para o posicionamento do tooltip */
+            overflow: hidden; /* Garante que o tooltip não vaze */
+        }
+
+        .social-card:hover {
+            transform: translateY(-8px) scale(1.02); /* Efeito de "elevação" no hover */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Sombra mais intensa no hover */
+            background-color: var(--color-tertiary); /* Fundo sutil no hover */
+            color: var(--color-white);
+        }
+
+        .social-card:hover .social-icon {
+            color: var(--color-primary); /* Ícone verde no hover */
+        }
+
+        .social-card:hover .social-name {
+            color: var(--color-dark-gray); /* Nome escuro no hover */
+        }
+
+        .social-icon {
+            font-size: 3.5rem; /* Tamanho grande para os ícones */
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+            transition: color 0.3s ease;
+        }
+
+        .social-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--color-dark-gray);
+            transition: color 0.3s ease;
+        }
+
+        /* Estilos dos Tooltips */
+        .social-card .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            background-color: var(--color-dark-gray);
+            color: var(--color-white);
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px 12px;
+            position: absolute;
+            z-index: 1;
+            bottom: 105%; /* Posiciona o tooltip acima do card */
+            left: 50%;
+            transform: translateX(-50%);
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            white-space: nowrap; /* Impede que o texto quebre linha */
+            font-size: 0.9rem;
+        }
+
+        .social-card .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%; /* Posiciona a seta na parte inferior do tooltip */
+            left: 50%;
+            margin-left: -5px; /* Centraliza a seta */
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--color-dark-gray) transparent transparent transparent;
+        }
+
+        .social-card:hover .tooltip {
+            visibility: visible;
+            opacity: 1; /* Torna o tooltip visível no hover */
+        }
+
+        /* ====================================== */
+        /* Responsividade da Seção Fale Comigo */
+        /* ====================================== */
+        @media (max-width: 600px) {
+            .fale-comigo-section {
+                padding: 3rem 1rem;
+            }
+
+            .fale-comigo-section h2 {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
+
+            .social-grid {
+                grid-template-columns: 1fr; /* Uma coluna em telas menores */
+            }
+
+            .social-card {
+                padding: 1.5rem;
+            }
+
+            .social-icon {
+                font-size: 3rem;
+            }
+
+            .social-name {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* =============================== */
+        /* Estilos da Seção Sobre Mim */
+        /* =============================== */
+        .about-me-section {
+            padding: 5rem 2rem;
+            text-align: center;
+            background-color: var(--color-secondary);
+            color: var(--color-white);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .about-me-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--color-white);
+        }
+
+        .about-me-section p {
+            font-size: 1.1rem;
+            max-width: 900px;
+            margin: 0 auto 1.5rem auto;
+            line-height: 1.8;
+            color: var(--color-white);
+        }
+
+        /* Estilos do botão de resumo LLM */
+        .generate-summary-button {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border: none;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .generate-summary-button:hover {
+            background-color: var(--color-secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .generate-summary-button .lucide {
+            margin-right: 0.6rem;
+            width: 20px;
+            height: 20px;
+        }
+
+        .summary-output {
+            background-color: rgba(255, 255, 255, 0.15); /* Fundo translúcido */
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            max-width: 700px;
+            text-align: left;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-style: italic;
+            color: var(--color-white);
+            font-size: 1rem;
+            opacity: 0; /* Escondido por padrão para a animação */
+            transform: translateY(20px); /* Começa um pouco abaixo para a animação */
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .summary-output.visible {
+            opacity: 1;
+            transform: translateY(0); /* Move para a posição final e se torna visível */
+        }
+
+        .summary-output.loading {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* ================================ */
+        /* Estilos da Seção Portfólio */
+        /* ================================ */
+        .portfolio-section {
+            padding: 5rem 2rem;
+            text-align: center;
+            background-color: var(--color-tertiary);
+            color: var(--color-dark-gray);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .portfolio-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--color-dark-gray);
+        }
+
+        .portfolio-section p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+            color: var(--color-dark-gray);
+        }
+
+        .portfolio-button {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: none;
+            cursor: pointer;
+        }
+
+        .portfolio-button:hover {
+            background-color: var(--color-secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .portfolio-button .lucide {
+            margin-right: 0.8rem;
+            width: 24px;
+            height: 24px;
+        }
+
+        /* ===================================== */
+        /* Estilos para o Botão "Nosso Cantinho" */
+        /* ===================================== */
+        .nosso-cantinho-section { /* Renomeado para consistência */
+            padding: 4rem 2rem;
+            text-align: center;
+            background-color: var(--color-light-gray);
+            display: flex; /* Adicionado para centralizar conteúdo */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nosso-cantinho-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--color-dark-gray);
+        }
+
+        .nosso-cantinho-section p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+            color: var(--color-dark-gray);
+        }
+
+        .nosso-cantinho-button {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--color-dark-gray);
+            color: var(--color-white);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: none;
+            cursor: pointer;
+            margin-top: 2rem;
+        }
+
+        .nosso-cantinho-button:hover {
+            background-color: #555;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .nosso-cantinho-button .lucide {
+            margin-right: 0.8rem;
+            width: 24px;
+            height: 24px;
+        }
+
+        /* ======================== */
+        /* Estilos do Rodapé (Footer) */
+        /* ======================== */
+        .footer {
+            background-color: var(--color-dark-gray);
+            color: var(--color-white);
+            padding: 2rem;
+            text-align: center;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        .footer p {
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-nav li a {
+            font-size: 0.95rem;
+            color: var(--color-white);
+            transition: color 0.3s ease;
+        }
+
+        .footer-nav li a:hover {
+            color: var(--color-secondary);
+        }
+
+        .footer-social-icons {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .footer-social-icons a {
+            color: var(--color-white);
+            font-size: 1.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .footer-social-icons a:hover {
+            color: var(--color-secondary);
+            transform: translateY(-3px);
+        }
+
+        /* =========================== */
+        /* Estilos para Scroll Reveal */
+        /* =========================== */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px); /* Começa um pouco abaixo */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0); /* Move para a posição original */
+        }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800">
+<body>
+    <header class="header">
+        <div class="header-logo">
+            <a href="#home">João Marcos</a>
+        </div>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="#fale-comigo">Fale Comigo</a></li>
+                <li><a href="#sobre-mim">Sobre Mim</a></li>
+                <li><a href="https://www.notion.so/PORTF-LIO-DE-JO-O-MARCOS-21a317b388b9809e9c67c46fa3524b6f" target="_blank">Portfólio</a></li>
+                <!-- Novo link para "Nosso Cantinho" -->
+                <li><a href="[URL_DO_NOSSO_CANTINHO]" target="_blank">Nosso Cantinho</a></li>
+            </ul>
+            <div class="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
 
-<header class="bg-white/80 backdrop-blur-md fixed w-full z-50 shadow">
-  <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-    <span class="text-xl font-bold text-slate-900">JM <span class="text-sky-700">Analytics</span></span>
-    <nav class="hidden md:flex gap-6 text-base">
-      <a href="#inicio" class="nav-link text-slate-600 hover:text-sky-700">Início</a>
-      <a href="#servicos" class="nav-link text-slate-600 hover:text-sky-700">Serviços</a>
-      <a href="#jogos" class="nav-link text-slate-600 hover:text-sky-700">Jogos</a>
-      <a href="#blog" class="nav-link text-slate-600 hover:text-sky-700">Blog</a>
-      <a href="#contato" class="nav-link text-slate-600 hover:text-sky-700">Contato</a>
-    </nav>
-  </div>
-</header>
+    <main>
+        <!-- Seção Fale Comigo -->
+        <section id="fale-comigo" class="fale-comigo-section scroll-reveal">
+            <h2>Fale Comigo</h2>
+            <div class="social-grid">
+                <!-- LinkedIn Link Atualizado -->
+                <a href="https://www.linkedin.com/in/jo%C3%A3o-marcos-souza-pereira-38750a289/" target="_blank" class="social-card" aria-label="LinkedIn de João Marcos">
+                    <i data-lucide="linkedin" class="social-icon"></i>
+                    <span class="social-name">LinkedIn</span>
+                    <span class="tooltip">Conecte-se no LinkedIn</span>
+                </a>
+                <!-- WhatsApp Link Atualizado -->
+                <a href="https://wa.me/5535999706921" target="_blank" class="social-card" aria-label="WhatsApp de João Marcos">
+                    <i data-lucide="whatsapp" class="social-icon"></i>
+                    <span class="social-name">WhatsApp</span>
+                    <span class="tooltip">Envie uma mensagem</span>
+                </a>
+                <!-- GitHub Link Atualizado -->
+                <a href="https://github.com/JoaoMarcosSSPereira" target="_blank" class="social-card" aria-label="GitHub de João Marcos">
+                    <i data-lucide="github" class="social-icon"></i>
+                    <span class="social-name">GitHub</span>
+                    <span class="tooltip">Veja meus projetos no GitHub</span>
+                </a>
+                <!-- Instagram Link Atualizado -->
+                <a href="https://www.instagram.com/p/DL02TuVvl_k/" target="_blank" class="social-card" aria-label="Instagram de João Marcos">
+                    <i data-lucide="instagram" class="social-icon"></i>
+                    <span class="social-name">Instagram</span>
+                    <span class="tooltip">Siga-me no Instagram</span>
+                </a>
+            </div>
+        </section>
 
-<main class="pt-24">
-  <!-- Início (Hero) -->
-  <section id="inicio" class="py-16 text-center bg-white">
-    <div class="max-w-3xl mx-auto px-4">
-      <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-4">Transformo Dados em Decisões</h1>
-      <p class="text-lg md:text-xl text-slate-600 mb-8">Dashboards, automação e insights claros para sua empresa crescer.</p>
-      <div class="flex justify-center gap-3 flex-wrap">
-        <a href="#contato" class="bg-sky-700 text-white px-6 py-2 rounded-lg font-semibold hover:bg-sky-800 transition">Fale comigo</a>
-        <a href="https://www.linkedin.com/in/joão-marcos-souza-pereira-38750a289" target="_blank" rel="noopener noreferrer" class="bg-slate-200 text-slate-800 px-6 py-2 rounded-lg font-semibold hover:bg-slate-300 transition">LinkedIn</a>
-      </div>
-    </div>
-  </section>
+        <!-- Nova Seção Sobre Mim -->
+        <section id="sobre-mim" class="about-me-section scroll-reveal">
+            <h2>Sobre Mim</h2>
+            <p id="about-me-text">
+                Sou João Marcos Souza Pereira, estudo Ciências de Dados e Análise Comportamental na faculdade Unicesumar. Atualmente, sou assistente administrativo concursado e prestador de serviços em Tecnologia da Informação.
+            </p>
+            <p>
+                Na JM Analytics, meu foco é alavancar resultados através de análises preditivas, dashboards intuitivos e sistemas robustos. Acredito que a combinação de habilidades técnicas e uma visão estratégica é fundamental para desvendar insights valiosos e construir produtos digitais de alta qualidade.
+            </p>
+            <p>
+                Estou sempre em busca de novos desafios e oportunidades para aplicar meu conhecimento e contribuir para projetos inovadores. Seja bem-vindo ao meu espaço!
+            </p>
+            <!-- Botão para gerar resumo com LLM -->
+            <button id="generate-summary-btn" class="generate-summary-button">
+                <i data-lucide="sparkles"></i>
+                ✨ Gerar Resumo Rápido
+            </button>
+            <!-- Área para exibir o resumo gerado -->
+            <div id="summary-output" class="summary-output">
+                Clique no botão acima para um resumo conciso sobre João Marcos.
+            </div>
+        </section>
 
-  <!-- Serviços (Inclui Competências) -->
-  <!-- Principais Competências (SEM gráfico) -->
-<section id="servicos" class="py-16 bg-white">
-  <div class="max-w-6xl mx-auto px-4">
-    <div class="mb-12">
-      <h2 class="text-3xl font-bold text-sky-700 mb-4 text-center">Principais Competências</h2>
-      <div class="flex flex-col items-center">
-        <h3 class="text-xl font-bold mb-2 text-slate-900">Ferramentas e Habilidades</h3>
-        <div id="keywords-container" class="flex flex-wrap gap-2 justify-center"></div>
-      </div>
-    </div>
-    <!-- Cards de Serviços -->
-    <h2 class="text-3xl font-bold text-sky-700 mb-4 text-center">Como Posso Ajudar</h2>
-    <div id="services-list" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
-  </div>
-</section>
+        <!-- Seção Portfólio (com botão para Notion e nova copy) -->
+        <section id="portfolio" class="portfolio-section scroll-reveal">
+            <h2>Meu Portfólio: Projetos e Insights</h2>
+            <p>
+                Explore uma coleção abrangente dos meus projetos em Ciência de Dados, Análise e Engenharia de Dados, e Desenvolvimento Full Stack.
+                Aqui você encontrará estudos de caso detalhados, dashboards interativos, soluções de Machine Learning e exemplos de código que demonstram minha expertise e paixão por transformar dados em valor.
+            </p>
+            <a href="https://www.notion.so/PORTF-LIO-DE-JO-O-MARCOS-21a317b388b9809e9c67c46fa3524b6f" target="_blank" class="portfolio-button">
+                <i data-lucide="external-link"></i>
+                Ver Portfólio Completo no Notion
+            </a>
+        </section>
 
+        <!-- Botão "Nosso Cantinho" como uma seção separada para destaque -->
+        <section id="nosso-cantinho-link" class="nosso-cantinho-section scroll-reveal"> <!-- Classe renomeada -->
+            <h2>Explore Mais</h2>
+            <p>Para um mergulho mais profundo em meus artigos, estudos e projetos pessoais, visite nosso espaço dedicado.</p>
+            <a href="[URL_DO_NOSSO_CANTINHO]" target="_blank" class="nosso-cantinho-button">
+                <i data-lucide="book-open"></i> <!-- Ícone de livro aberto ou similar -->
+                Nosso Cantinho
+            </a>
+        </section>
+    </main>
 
-  <!-- Jogos e Interações (apenas Jogo dos Gurus) -->
-  <section id="jogos" class="py-16">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <h2 class="text-3xl font-bold text-sky-700 mb-4">Jogos e projetos</h2>
-      <p class="text-lg text-slate-600 mb-8">Explore dados de forma divertida e prática aprendendo para futuras entrevistas.</p>
-      <div class="flex flex-wrap gap-4 justify-center">
-        <a href="https://meuquiz.onrender.com/" target="_blank" rel="noopener noreferrer"
-           class="bg-sky-700 text-white px-6 py-2 rounded-lg font-semibold hover:bg-sky-800 transition">
-          Jogo dos Gurus
-        </a>
-      </div>
-    </div>
-  </section>
+    <!-- Rodapé (Footer) -->
+    <footer class="footer">
+        <p>© João Marcos 2025</p>
+        <nav class="footer-nav">
+            <ul>
+                <li><a href="#fale-comigo">Fale Comigo</a></li>
+                <li><a href="#sobre-mim">Sobre Mim</a></li>
+                <li><a href="https://www.notion.so/PORTF-LIO-DE-JO-O-MARCOS-21a317b388b9809e9c67c46fa3524b6f" target="_blank">Portfólio</a></li>
+                <!-- Novo link para "Nosso Cantinho" no rodapé -->
+                <li><a href="[URL_DO_NOSSO_CANTINHO]" target="_blank">Nosso Cantinho</a></li>
+            </ul>
+        </nav>
+        <div class="footer-social-icons">
+            <!-- LinkedIn Link Atualizado no Rodapé -->
+            <a href="https://www.linkedin.com/in/jo%C3%A3o-marcos-souza-pereira-38750a289/" target="_blank" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+            <!-- WhatsApp Link Atualizado no Rodapé -->
+            <a href="https://wa.me/5535999706921" target="_blank" aria-label="WhatsApp"><i data-lucide="whatsapp"></i></a>
+            <!-- GitHub Link Atualizado no Rodapé -->
+            <a href="https://github.com/JoaoMarcosSSPereira" target="_blank" aria-label="GitHub"><i data-lucide="github"></i></a>
+            <!-- Instagram Link Atualizado no Rodapé -->
+            <a href="https://www.instagram.com/p/DL02TuVvl_k/" target="_blank" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+        </div>
+    </footer>
 
-  <!-- Blog e Newsletter -->
-  <section id="blog" class="py-16 bg-white">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <h2 class="text-3xl font-bold text-sky-700 mb-4">Blog & Newsletter</h2>
-      <p class="text-lg text-slate-600 mb-8">Receba meus conteúdos e análises direto pelo LinkedIn.</p>
-      <a href="https://www.linkedin.com/newsletters/7346233737879113729/" 
-         target="_blank" rel="noopener noreferrer"
-         class="bg-slate-200 text-slate-800 px-6 py-2 rounded-lg font-semibold hover:bg-slate-300 transition">
-        Newsletter no LinkedIn
-      </a>
-    </div>
-  </section>
+    <script>
+        // JavaScript para o menu hambúrguer e navegação
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburgerMenu = document.querySelector('.hamburger-menu');
+            const navMenu = document.querySelector('.nav-menu');
+            const navLinks = document.querySelectorAll('.nav-menu li a');
+            const generateSummaryBtn = document.getElementById('generate-summary-btn');
+            const aboutMeTextElement = document.getElementById('about-me-text');
+            const summaryOutput = document.getElementById('summary-output');
 
-  <!-- Contato (com GitHub certo) -->
-  <section id="contato" class="py-16">
-    <div class="max-w-3xl mx-auto px-4 text-center">
-      <h2 class="text-3xl font-bold text-sky-700 mb-4">Vamos conversar?</h2>
-      <p class="text-lg text-slate-600 mb-8">Quer automatizar relatórios, criar dashboards ou ter análises sob medida? Só chamar!</p>
-      <div class="flex flex-wrap gap-4 justify-center">
-        <a href="mailto:joaomarcossouzapereira94@gmail.com" class="bg-sky-700 text-white px-6 py-2 rounded-lg font-semibold hover:bg-sky-800 transition">E-mail</a>
-        <a href="https://wa.me/5535999706921" target="_blank" rel="noopener noreferrer" class="bg-green-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-600 transition">WhatsApp</a>
-        <a href="https://www.notion.so/PORTF-LIO-DE-JO-O-MARCOS-21a317b388b9809e9c67c46fa3524b6f" target="_blank" rel="noopener noreferrer" class="bg-slate-200 text-slate-800 px-6 py-2 rounded-lg font-semibold hover:bg-slate-300 transition">Portfólio</a>
-        <a href="https://github.com/JoaoMarcosSSPereira" target="_blank" rel="noopener noreferrer"
-           class="bg-slate-800 text-white px-6 py-2 rounded-lg font-semibold hover:bg-slate-900 transition">
-          GitHub
-        </a>
-      </div>
-    </div>
-  </section>
-</main>
+            // Função para alternar a visibilidade do menu
+            hamburgerMenu.addEventListener('click', () => {
+                hamburgerMenu.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
 
-<footer class="bg-slate-800 text-white py-6 text-center text-sm">
-  <span>&copy; 2024 João Marcos Souza</span>
-</footer>
+            // Fechar o menu ao clicar em um link (para mobile)
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    // Verifica se o link não é uma âncora interna (ou seja, é um link externo como o Notion ou "Nosso Cantinho")
+                    if (!link.getAttribute('href').startsWith('#')) {
+                        // Se for um link externo, apenas fecha o menu
+                        if (navMenu.classList.contains('active')) {
+                            hamburgerMenu.classList.remove('active');
+                            navMenu.classList.remove('active');
+                        }
+                    } else {
+                        // Se for uma âncora interna, rola suavemente e fecha o menu
+                        const targetId = link.getAttribute('href').substring(1);
+                        const targetSection = document.getElementById(targetId);
+                        if (targetSection) {
+                            const headerOffset = document.querySelector('.header').offsetHeight;
+                            const elementPosition = targetSection.getBoundingClientRect().top + window.pageYOffset;
+                            const offsetPosition = elementPosition - headerOffset;
 
-<!-- Script principal com Lazy Loading -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const keywords = ["Dados", "Power BI", "Excel", "SQL", "Python", "Dashboards", "Automação", "Gestão", "Business Intelligence", "KPIs", "Visualização"];
-  const keywordsContainer = document.getElementById('keywords-container');
-  keywords.forEach(kw => {
-    const tag = document.createElement('span');
-    tag.textContent = kw;
-    tag.className = 'keyword-tag bg-white text-sky-800 px-3 py-1 rounded-full shadow font-semibold text-sm';
-    keywordsContainer.appendChild(tag);
-  });
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: "smooth"
+                            });
+                        }
+                        if (navMenu.classList.contains('active')) {
+                            hamburgerMenu.classList.remove('active');
+                            navMenu.classList.remove('active');
+                        }
+                    }
+                });
+            });
 
-  // Lazy Load Chart.js (Radar) e serviços
-  let chartLoaded = false;
-  function renderChart() {
-    if (chartLoaded) return;
-    chartLoaded = true;
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-    script.onload = () => {
-      const skillsData = {
-        labels: ['Dashboards', 'Análise', 'Automação', 'Gestão', 'Inovação'],
-        datasets: [{
-          label: 'Expertise (%)',
-          data: [90, 85, 88, 92, 80],
-          backgroundColor: 'rgba(3, 105, 161, 0.15)',
-          borderColor: 'rgb(3, 105, 161)',
-          pointBackgroundColor: 'rgb(3, 105, 161)'
-        }]
-      };
-      new window.Chart(document.getElementById('skillsRadarChart').getContext('2d'), {
-        type: 'radar',
-        data: skillsData,
-        options: {
-          responsive: true,
-          plugins: { legend: { display: false } },
-          scales: { r: { pointLabels: { font: { size: 13 }, color: '#1e293b' }, ticks: { display: false } } }
-        }
-      });
-    };
-    document.body.appendChild(script);
-  }
+            // Destacar o link ativo na navegação ao rolar
+            const sections = document.querySelectorAll('section[id]');
 
-  let servicesLoaded = false;
-  function renderServices() {
-    if (servicesLoaded) return;
-    servicesLoaded = true;
-    const services = [
-      { title: 'Dashboards Interativos', desc: 'Veja seus dados em painéis visuais, práticos e atualizados.' },
-      { title: 'Automação de Relatórios', desc: 'Relatórios automáticos para economia de tempo e redução de erros.' },
-      { title: 'Análise Personalizada', desc: 'Entenda tendências, oportunidades e riscos com análises sob medida.' },
-      { title: 'Otimização de Processos', desc: 'Torne fluxos de trabalho mais ágeis e eficientes.' },
-      { title: 'Suporte à Decisão', desc: 'Apoio estratégico com dados para decisões melhores.' },
-      { title: 'Projetos sob Demanda', desc: 'Soluções de dados do seu jeito, para qualquer desafio.' }
-    ];
-    const list = document.getElementById('services-list');
-    services.forEach(s => {
-      const card = document.createElement('div');
-      card.className = 'bg-white p-5 rounded-xl shadow hover:shadow-lg transition flex flex-col';
-      card.innerHTML = `<h4 class="text-lg font-bold mb-2 text-slate-900">${s.title}</h4><p class="text-slate-600">${s.desc}</p>`;
-      list.appendChild(card);
-    });
-  }
+            window.addEventListener('scroll', () => {
+                let current = '';
+                // Ajuste para garantir que o cabeçalho não cubra a seção ativa
+                const headerHeight = document.querySelector('.header').offsetHeight;
+                sections.forEach(section => {
+                    // Exclui a seção "Nosso Cantinho" da ativação de scroll se ela for apenas um botão externo
+                    if (section.id === 'nosso-cantinho-link') return;
 
-  // IntersectionObserver para lazy loading
-  if ('IntersectionObserver' in window) {
-    const servicosSection = document.getElementById('servicos');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          renderChart();
-          renderServices();
-        }
-      });
-    }, { rootMargin: '0px 0px -150px 0px' });
-    observer.observe(servicosSection);
-  } else {
-    renderChart();
-    renderServices();
-  }
+                    const sectionTop = section.offsetTop - headerHeight;
+                    const sectionHeight = section.clientHeight;
+                    // Adiciona um pequeno offset para a ativação ser mais precisa
+                    if (pageYOffset >= sectionTop - 50) {
+                        current = section.getAttribute('id');
+                    }
+                });
 
-  // Scrollspy
-  const sections = document.querySelectorAll('section');
-  const navLinks = document.querySelectorAll('.nav-link');
-  window.addEventListener('scroll', () => {
-    let fromTop = window.scrollY + 80;
-    sections.forEach(section => {
-      if (section.offsetTop <= fromTop && section.offsetTop + section.offsetHeight > fromTop) {
-        navLinks.forEach(link => {
-          link.classList.toggle('active-nav', link.getAttribute('href').slice(1) === section.id);
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    // Verifica se o link é uma âncora interna antes de tentar ativar
+                    if (link.getAttribute('href').startsWith('#') && link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            // --- Funcionalidade LLM: Gerar Resumo Rápido ---
+            generateSummaryBtn.addEventListener('click', async () => {
+                const aboutMeText = aboutMeTextElement.innerText; // Pega o texto da seção "Sobre Mim"
+                summaryOutput.classList.remove('visible'); // Esconde o resumo anterior
+                summaryOutput.classList.add('loading');
+                summaryOutput.innerText = 'Gerando resumo...'; // Mensagem de carregamento
+
+                try {
+                    let chatHistory = [];
+                    const prompt = `Resuma o seguinte texto sobre um profissional de dados e tecnologia em uma frase concisa (máximo 20 palavras), focando nas principais áreas de atuação e paixão: "${aboutMeText}"`;
+                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; // A chave da API será fornecida pelo ambiente Canvas
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    // Verifica se a resposta HTTP foi bem-sucedida
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(`Erro na rede: ${response.status} ${response.statusText} - ${errorText}`);
+                    }
+
+                    // Verifica se o Content-Type é JSON antes de tentar parsear
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('application/json')) {
+                        const errorText = await response.text();
+                        throw new Error(`Resposta não é JSON. Content-Type: ${contentType}. Resposta: ${errorText}`);
+                    }
+
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        summaryOutput.innerText = text; // Exibe o resumo
+                        summaryOutput.classList.add('visible'); // Mostra com animação
+                    } else {
+                        summaryOutput.innerText = 'Erro ao gerar resumo. Estrutura de resposta inesperada.';
+                        console.error('Estrutura de resposta inesperada da API Gemini:', result);
+                    }
+                } catch (error) {
+                    summaryOutput.innerText = `Erro ao gerar resumo: ${error.message}. Tente novamente.`;
+                    console.error('Erro ao chamar a API Gemini:', error);
+                } finally {
+                    summaryOutput.classList.remove('loading');
+                }
+            });
+
+            // --- Funcionalidade Scroll Reveal ---
+            const scrollRevealElements = document.querySelectorAll('.scroll-reveal');
+
+            const observerOptions = {
+                root: null, // O viewport é o elemento raiz
+                rootMargin: '0px',
+                threshold: 0.15 // A seção se torna visível quando 15% dela está no viewport
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active'); // Adiciona a classe para ativar a animação
+                        observer.unobserve(entry.target); // Para de observar depois de animar
+                    }
+                });
+            }, observerOptions);
+
+            scrollRevealElements.forEach(element => {
+                observer.observe(element); // Começa a observar cada elemento
+            });
+
+            // Inicializa os ícones Lucide
+            lucide.createIcons();
         });
-      }
-    });
-  });
-});
-</script>
+    </script>
 </body>
 </html>
